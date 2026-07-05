@@ -1,18 +1,18 @@
 package org.example.frusitshopapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "carts")
 public class Cart {
 
@@ -24,6 +24,9 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
