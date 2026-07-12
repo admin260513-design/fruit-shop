@@ -5,6 +5,8 @@ import org.example.frusitshopapp.dto.ProductRequestDto;
 import org.example.frusitshopapp.dto.ProductResponseDto;
 import org.example.frusitshopapp.entity.Product;
 import org.example.frusitshopapp.entity.User;
+import org.example.frusitshopapp.exception.CustomException;
+import org.example.frusitshopapp.exception.ErrorCode;
 import org.example.frusitshopapp.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +48,7 @@ public class ProductService {
 //    3-1. 상품 선택조회 -- id
     public ProductResponseDto getProduct(Long id){
         Product product = productRepository.findById(id).orElseThrow(()->
-                new RuntimeException("상품을 찾을 수 없습니다."));
+                new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
         return ProductResponseDto.from(product);
     }
 
@@ -60,10 +62,10 @@ public class ProductService {
     @Transactional
     public ProductResponseDto updateProduct(Long id, User user, ProductRequestDto requestDto){
         Product product = productRepository.findById(id).orElseThrow(()->
-                new RuntimeException("상품을 찾을 수 없습니다."));
+                new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         if (!product.getUser().getId().equals(user.getId())){
-            throw new RuntimeException("본인 상품만 수정 할 수 있습니다.");
+            throw new CustomException(ErrorCode.PRODUCT_FORBIDDEN);
         }
 
         product.setName(requestDto.getName());
@@ -79,10 +81,10 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id, User user){
         Product product = productRepository.findById(id).orElseThrow(()->
-                new RuntimeException("상품을 찾을 수 없습니다."));
+                new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         if (!product.getUser().getId().equals(user.getId())){
-            throw new RuntimeException("본인 상품만 삭제 할 수 있습니다.");
+            throw new CustomException(ErrorCode.PRODUCT_FORBIDDEN);
         }
         productRepository.delete(product);
     }

@@ -7,6 +7,8 @@ import org.example.frusitshopapp.entity.Cart;
 import org.example.frusitshopapp.entity.CartItem;
 import org.example.frusitshopapp.entity.Product;
 import org.example.frusitshopapp.entity.User;
+import org.example.frusitshopapp.exception.CustomException;
+import org.example.frusitshopapp.exception.ErrorCode;
 import org.example.frusitshopapp.repository.CartItemRepository;
 import org.example.frusitshopapp.repository.CartRepository;
 import org.example.frusitshopapp.repository.ProductRepository;
@@ -35,7 +37,7 @@ public class CartService {
 
 //      1-2. productId로 Product 찾기
         Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
 //      1-3. CartItem에 이미 있으면 수량만 올리기
         Optional<CartItem> existingItem = cartItemRepository.findByCartAndProduct(cart, product);
@@ -55,10 +57,10 @@ public class CartService {
     }
 
     //    2. 장바구니 조회 -- 유저로 카트찾고 아이템으로 반환?
-    public List<CartItemResponseDto> getCartItem(CartItemRequestDto dto, User user) {
+    public List<CartItemResponseDto> getCartItem(User user) {
 
         Cart cart = cartRepository.findByUser(user).orElseThrow(()->
-                new RuntimeException("장바구니가 없습니다."));
+                new CustomException(ErrorCode.CART_NOT_FOUND));
 
         return cart.getCartItems().stream()
                 .map(CartItemResponseDto::from)
@@ -70,10 +72,10 @@ public class CartService {
     public CartItemResponseDto updateCartItem(Long cartItemId, CartItemRequestDto dto, User user){
 
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(()->
-                new RuntimeException("해당 유저가 없습니다."));
+                new CustomException(ErrorCode.CART_ITEM_NOT_FOUND));
 
         if (!cartItem.getCart().getUser().getId().equals(user.getId())){
-            throw new RuntimeException("본인 장바구니만 수정 가능합니다.");
+            throw new CustomException(ErrorCode.CART_FORBIDDEN);
         }
         cartItem.setQuantity(dto.getQuantity());
         return CartItemResponseDto.from(cartItem);
@@ -84,10 +86,10 @@ public class CartService {
     @Transactional
     public void deleteCartItem(Long cartItemId,User user){
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(()->
-                new RuntimeException("해당 유저가 없습니다."));
+                new CustomException(ErrorCode.CART_ITEM_NOT_FOUND));
 
         if (!cartItem.getCart().getUser().getId().equals(user.getId())){
-            throw new RuntimeException("본인 장바구니만 삭제 가능합니다.");
+            throw new CustomException(ErrorCode.CART_FORBIDDEN);
         }
         cartItemRepository.delete(cartItem);
     }
