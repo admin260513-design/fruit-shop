@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+<<<<<<< HEAD
+    id 'org.springframework.boot' version '3.5.16'
+=======
+    id 'org.springframework.boot' version '4.1.0'
+>>>>>>> cefa16fa35d706d4a162780cef80402cd6b66e85
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+<<<<<<< HEAD
+description = 'jwt_test'
+=======
+description = 'fruitshop'
+>>>>>>> cefa16fa35d706d4a162780cef80402cd6b66e85
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+<<<<<<< HEAD
+    // === 핵심 Spring Boot 기능 ===
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'   // JPA/Hibernate - Entity, Repository
+    implementation 'org.springframework.boot:spring-boot-starter-security'   // Spring Security - 인증/인가
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid, @NotEmpty 등 검증
+    implementation 'org.springframework.boot:spring-boot-starter-web'        // REST API, 내장 톰캣
+
+    // === Lombok (어노테이션으로 getter/setter/생성자 자동 생성) ===
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // === DB 드라이버 ===
+    runtimeOnly 'com.mysql:mysql-connector-j'   // MySQL 연결용
+
+    // === API 문서화 (Swagger UI) ===
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.17'
+
+    // === JWT 토큰 생성/검증 라이브러리 ===
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'      // Jwts, Claims 등 핵심 API
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'         // 실제 구현체 (실행 시에만 필요)
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'      // JSON payload 처리
+
+    // === 테스트 전용 ===
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+=======
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'com.auth0:java-jwt:4.5.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
+>>>>>>> cefa16fa35d706d4a162780cef80402cd6b66e85
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
